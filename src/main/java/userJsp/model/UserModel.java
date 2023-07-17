@@ -9,7 +9,7 @@ public class UserModel {
 	 public UserModel() {}
 	 
 	public UserModel(String name, String userName, String email, String password, String cpf, Long supervisorId,
-			Boolean status, List<Object> permissions) {
+			Boolean status, List<Permission> permissions, String supervisorName) {
 		super();
 		this.name = name;
 		this.userName = userName;
@@ -19,6 +19,7 @@ public class UserModel {
 		this.supervisorId = supervisorId;
 		this.status = status;
 		this.permissions = permissions;
+		this.supervisorName = supervisorName;
 	}
 
 	private Long id;
@@ -28,8 +29,9 @@ public class UserModel {
 	private String password;
 	private String cpf;
 	private Long supervisorId;
+	private String supervisorName;
 	private Boolean status;
-	private List<Object> permissions;
+	private List<Permission> permissions;
 	public Long getId() {
 		return id;
 	}
@@ -78,12 +80,22 @@ public class UserModel {
 	public void setStatus(Boolean status) {
 		this.status = status;
 	}
-	public List<Object> getPermissions() {
+	public List<Permission> getPermissions() {
 		return permissions;
 	}
-	public void setPermissions(List<Object> permissions) {
+	public void setPermissions(List<Permission> permissions) {
 		this.permissions = permissions;
 	}
+
+
+	public String getSupervisorName() {
+		return supervisorName;
+	}
+
+	public void setSupervisorName(String supervisorName) {
+		this.supervisorName = supervisorName;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(email, name, userName);

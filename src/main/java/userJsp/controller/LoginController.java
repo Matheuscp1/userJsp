@@ -39,16 +39,18 @@ public class LoginController extends HttpServlet {
 
 				if (daoLogin.validarLogin(user, password)) {
 					page = "home.jsp";
+					response.sendRedirect(page);
 				} else {
 					page = "index.jsp";
 					request.setAttribute("message", msg);
+					RequestDispatcher dispatcher = request.getRequestDispatcher(page);
+					dispatcher.forward(request, response);
 				}
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		RequestDispatcher dispatcher = request.getRequestDispatcher(page);
-		dispatcher.forward(request, response);
+
 	}
 }

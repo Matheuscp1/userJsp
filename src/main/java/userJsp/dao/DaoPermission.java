@@ -5,9 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import userJsp.connection.SingleConnection;
 import userJsp.model.PermissionUser;
+import userJsp.model.UserModel;
 
 public class DaoPermission {
 	private Connection connection;
@@ -41,5 +44,23 @@ public class DaoPermission {
 			}
 		}
 		return generatedKey;
+	}
+	
+	public List<PermissionUser> permissionForUser(Long id) throws Exception {
+		String sql = "SELECT * FROM user_permissions WHERE user_id = " + id;
+		List<PermissionUser> permissions = new ArrayList<>();
+		PreparedStatement statement = connection.prepareStatement(sql);
+		ResultSet resultSet = statement.executeQuery();
+
+		if (resultSet.next()) {
+			PermissionUser permission = new PermissionUser();
+			permission.setId(resultSet.getLong("id"));
+			permission.setUserId(resultSet.getLong("user_id"));
+			permission.setPermissionId(resultSet.getLong("permission_id"));
+
+
+			permissions.add(permission);
+		} 
+		return permissions;
 	}
 }

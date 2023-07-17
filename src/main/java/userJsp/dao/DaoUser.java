@@ -110,7 +110,18 @@ public class DaoUser {
 		return listUsers;
 	}
 
+    public void deleteUser(int userId) {
+        try {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("delete from users where id=?");
+            // Parameters start with 1
+            preparedStatement.setInt(1, userId);
+            preparedStatement.executeUpdate();
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 

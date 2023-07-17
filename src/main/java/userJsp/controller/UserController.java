@@ -8,7 +8,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import userJsp.dao.DaoPermission;
 import userJsp.dao.DaoUser;
 import userJsp.model.PermissionUser;
@@ -17,11 +16,14 @@ import userJsp.model.UserModel;
 /**
  * Servlet implementation class UserController
  */
-@WebServlet("/UserController")
+@WebServlet(name = "Usuarios", urlPatterns =  {"/UserController"} )
 public class UserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private DaoUser daoUser = new DaoUser();
 	private DaoPermission daoPermission= new DaoPermission();
+	
+    private static String INSERT_OR_EDIT = "user.jsp";
+    private static String LIST_USER = "home.jsp";
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -35,7 +37,20 @@ public class UserController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+
+	      String action = request.getParameter("action");
+	      if (action.equalsIgnoreCase("delete")){
+	            int userId = Integer.parseInt(request.getParameter("userId"));
+	            daoUser.deleteUser(userId);
+	            response.sendRedirect(LIST_USER);
+	            //forward = LIST_USER;
+	            //request.setAttribute("users", dao.getAllUsers());    
+	        } else if (action.equalsIgnoreCase("edit")){
+	            //forward = INSERT_OR_EDIT;
+	            int userId = Integer.parseInt(request.getParameter("userId"));
+	            //User user = dao.getUserById(userId);
+	            //request.setAttribute("user", user);
+	        }
 	}
 
 	/**

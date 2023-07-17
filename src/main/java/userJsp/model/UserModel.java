@@ -9,7 +9,7 @@ public class UserModel {
 	 public UserModel() {}
 	 
 	public UserModel(String name, String userName, String email, String password, String cpf, Long supervisorId,
-			Boolean status, List<Permission> permissions, String supervisorName) {
+			Boolean status, List<PermissionUser> permissions, String supervisorName) {
 		super();
 		this.name = name;
 		this.userName = userName;
@@ -31,7 +31,7 @@ public class UserModel {
 	private Long supervisorId;
 	private String supervisorName;
 	private Boolean status;
-	private List<Permission> permissions;
+	private List<PermissionUser> permissions;
 	public Long getId() {
 		return id;
 	}
@@ -80,10 +80,10 @@ public class UserModel {
 	public void setStatus(Boolean status) {
 		this.status = status;
 	}
-	public List<Permission> getPermissions() {
+	public List<PermissionUser> getPermissions() {
 		return permissions;
 	}
-	public void setPermissions(List<Permission> permissions) {
+	public void setPermissions(List<PermissionUser> permissions) {
 		this.permissions = permissions;
 	}
 

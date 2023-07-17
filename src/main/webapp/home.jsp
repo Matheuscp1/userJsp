@@ -26,6 +26,7 @@
 				<th>CPF</th>
 				<th>Usuário Responsável</th>
 				<th>Status</th>
+				<th>Acões</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -45,7 +46,9 @@
 				</td>
 				<td>
 					<%
-					out.println(user.getSupervisorName());
+					String supervisorName = "Sem responsável";
+					if(user.getSupervisorName() != null) supervisorName = user.getSupervisorName();
+					out.println(supervisorName);
 					%>
 				</td>
 				<td>
@@ -55,6 +58,10 @@
 					out.println(status);
 					%>
 				</td>
+				<td>
+					<a class="link-table" href="UserController?action=delete&userId=<%out.print(user.getId());%>">Deletar</a>
+					<a class="link-table" href="UserController?action=edit&userId=<%out.print(user.getId());%>">Editar</a>
+				</td>
 			</tr>
 
 			<%
@@ -63,6 +70,9 @@
 			<!-- and so on... -->
 		</tbody>
 	</table>
-
+		<%
+		UserModel user = (UserModel) 	session.getAttribute("user");
+	out.println(user.getPermissions().get(0).getUserId());
+					%>
 </body>
 </html>

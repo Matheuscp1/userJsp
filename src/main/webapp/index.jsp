@@ -10,18 +10,33 @@
 <body>
 
 	<div class="login-page">
-
 		<div class="form">
-			<form action="logins" method="post">
-				Login: <input type="text" id="login" name="login"
-					placeholder="Informe o login"> <br /> Senha: <input
-					type="password" id="senha" name="senha"
-					placeholder="Informe a senha"> <br />
+			<form action="login" method="post">
+				<label for="login">Usuario:</label> <input type="text" id="login"
+					name="user" placeholder="Informe o login"> <br /> <label
+					for="password"> Senha:</label> <input type="password" id="password"
+					name="password" placeholder="Informe a senha"> <br />
 
 				<button type="submit" value="Logar">Logar</button>
+
+				<%
+				String mensagem = (String) request.getAttribute("message");
+				if (mensagem != null) {
+				%>
+				<span class="error"> <%
+					 out.print(mensagem);
+				 %>
+				</span>
+				<%
+				}
+				%>
 			</form>
 		</div>
 
 	</div>
+
+	<%-- 		<%@ include file="../common/header.jsp" %> --%>
+
+
 </body>
 </html>

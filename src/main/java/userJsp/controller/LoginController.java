@@ -29,27 +29,26 @@ public class LoginController extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+		response.setContentType("text/html; charset=UTF-8");
+		String msg = "Senha ou usuário inválido";
+		String page  = "index.jsp";
 		try {
+			String user = request.getParameter("user");
+			String password = request.getParameter("password");
+			if (user != null && !user.isEmpty() && password != null && !password.isEmpty()) {
 
-			String login = request.getParameter("login");
-			String senha = request.getParameter("senha");
+				if (daoLogin.validarLogin(user, password)) {
+					page = "home.jsp";
+				} else {
+					page = "index.jsp";
+					request.setAttribute("message", msg);
+				}
+			}
 
-			/*
-			 * if (login != null && !login.isEmpty() && senha != null && !senha.isEmpty()) {
-			 * 
-			 * if (daoLogin.validarLogin(login, senha)) { RequestDispatcher dispatcher =
-			 * request.getRequestDispatcher("acessoliberado.jsp");
-			 * dispatcher.forward(request, response); } else { RequestDispatcher dispatcher
-			 * = request.getRequestDispatcher("acessonegado.jsp");
-			 * dispatcher.forward(request, response); } } else { RequestDispatcher
-			 * dispatcher = request.getRequestDispatcher("index.jsp");
-			 * dispatcher.forward(request, response); }
-			 */
-			
-			System.out.println(login + " " + senha);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		RequestDispatcher dispatcher = request.getRequestDispatcher(page);
+		dispatcher.forward(request, response);
 	}
 }

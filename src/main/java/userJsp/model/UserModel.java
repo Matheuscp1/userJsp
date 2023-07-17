@@ -6,9 +6,9 @@ import java.util.Objects;
 import userJsp.model.UserModel;
 
 public class UserModel {
-	 UserModel() {}
+	 public UserModel() {}
 	 
-	public UserModel(String name, String userName, String email, String password, String cpf, String responsibleUser,
+	public UserModel(String name, String userName, String email, String password, String cpf, Long supervisorId,
 			Boolean status, List<Object> permissions) {
 		super();
 		this.name = name;
@@ -16,7 +16,7 @@ public class UserModel {
 		this.email = email;
 		this.password = password;
 		this.cpf = cpf;
-		this.responsibleUser = responsibleUser;
+		this.supervisorId = supervisorId;
 		this.status = status;
 		this.permissions = permissions;
 	}
@@ -27,7 +27,7 @@ public class UserModel {
 	private String email;
 	private String password;
 	private String cpf;
-	private  String responsibleUser;
+	private Long supervisorId;
 	private Boolean status;
 	private List<Object> permissions;
 	public Long getId() {
@@ -66,11 +66,11 @@ public class UserModel {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-	public String getResponsibleUser() {
-		return responsibleUser;
+	public Long getsupervisorId() {
+		return supervisorId;
 	}
-	public void setResponsibleUser(String responsibleUser) {
-		this.responsibleUser = responsibleUser;
+	public void setsupervisorId(Long supervisorId) {
+		this.supervisorId = supervisorId;
 	}
 	public Boolean getStatus() {
 		return status;

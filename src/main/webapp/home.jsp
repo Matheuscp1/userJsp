@@ -4,8 +4,11 @@
 <%@page import="userJsp.dao.DaoUser"%>
 <%@page import="userJsp.model.Permission"%>
 <%@page import="userJsp.model.UserModel"%>
-<% if(session.getAttribute("user") == null){
+<% 
+UserModel userSession = (UserModel) session.getAttribute("user");
+if(userSession == null){
 	response.sendRedirect("index.jsp");
+	return;
 }; %>
 <!DOCTYPE html>
 <html>
@@ -15,13 +18,14 @@
 <title>Home</title>
 </head>
 <body>
-
-
 	<%
 	List<UserModel> users = new DaoUser().listAllUsers();
 	%>
+	<div class="link">
+		<a  href="<%= request.getContextPath() %>/user.jsp">Novo usuário</a>
+		<a  href="UserController?action=logout">Logout</a>
+	</div>
 
-	<a class="link" href="<%= request.getContextPath() %>/user.jsp">Novo usuário</a>
 	<table class="styled-table">
 		<thead>
 			<tr>
@@ -62,8 +66,12 @@
 					%>
 				</td>
 				<td>
+					<% if(userSession.getPermissions() != null && userSession.getPermissions().size() > 1 ) { %>
 					<a class="link-table" href="UserController?action=delete&userId=<%out.print(user.getId());%>">Deletar</a>
-					<a class="link-table" href="UserController?action=edit&userId=<%out.print(user.getId());%>">Editar</a>
+					<% } %>
+					<a class="link-table" href="UserController?action=edit&userId=<%out.print(user.getId());%>">
+						<% out.print(userSession.getPermissions() != null && userSession.getPermissions().size() > 1 ? "Editar" : "Visualizar"); %>
+					</a>
 				</td>
 			</tr>
 

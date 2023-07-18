@@ -48,6 +48,11 @@
 	margin-bottom: 5px;
 }
 
+.form button:disabled,.form button[disabled] {
+    background-color: gainsboro;
+    pointer-events: none;
+}
+
 .form button:hover,
 .form button:active,
 .form button:focus {
@@ -176,15 +181,18 @@ body {
 }
 
 .link {
+	margin-top: 10px;
 	margin-left: 45%;
 	margin-bottom: 11px;
 	padding: 0% 0 0;
-	display: block;
+}
+
+.link a {
 	text-decoration: none;
 	color: white;
 	font-weight: 700;
 	font-size: 18px;
-
+	margin-right: 10px;
 }
 
 .link-table {

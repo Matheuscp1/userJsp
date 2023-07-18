@@ -1,5 +1,7 @@
 package userJsp.model;
 
+import java.util.Objects;
+
 public class PermissionUser {
 
 	public PermissionUser() {};
@@ -30,6 +32,21 @@ public class PermissionUser {
 	}
 	public void setPermissionId(Long permissionId) {
 		this.permissionId = permissionId;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(permissionId);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PermissionUser other = (PermissionUser) obj;
+		return Objects.equals(permissionId, other.permissionId);
 	}
 
 	

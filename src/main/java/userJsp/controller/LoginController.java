@@ -44,7 +44,6 @@ public class LoginController extends HttpServlet {
 				UserModel userSearch = daoLogin.login(user, password);
 				if (userSearch.getId() != null) {
 					List<PermissionUser> permissions = daoPermission.permissionForUser(userSearch.getId());
-					System.out.println("login" + permissions.size());
 					for(PermissionUser permission: permissions) {
 						userSearch.setPermissions(permissions);
 					}

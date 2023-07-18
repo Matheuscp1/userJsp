@@ -46,13 +46,10 @@ public class UserController extends HttpServlet {
 		try {
 			String action = request.getParameter("action");
 			if (action.equalsIgnoreCase("delete")) {
-				int userId = Integer.parseInt(request.getParameter("userId"));
+				Long userId = Long.parseLong(request.getParameter("userId"));
 				daoUser.deleteUser(userId);
 				response.sendRedirect(LIST_USER);
-				// forward = LIST_USER;
-				// request.setAttribute("users", dao.getAllUsers());
 			} else if (action.equalsIgnoreCase("edit")) {
-				// forward = INSERT_OR_EDIT;
 				Long id = Long.parseLong(request.getParameter("userId").trim());
 				UserModel userSearch = daoUser.findById(id);
 				if (userSearch.getId() != null) {
@@ -60,14 +57,14 @@ public class UserController extends HttpServlet {
 					for (PermissionUser permission : permissions) {
 						userSearch.setPermissions(permissions);
 					}
-					// HttpSession session = request.getSession();
 					request.setAttribute("userEdit", userSearch);
 					RequestDispatcher dispatcher = request.getRequestDispatcher("user.jsp");
 					dispatcher.forward(request, response);
-					// response.sendRedirect("user.jsp");
 				}
-				// User user = dao.getUserById(userId);
-				// request.setAttribute("user", user);
+			}else if(action.equalsIgnoreCase("logout")) {
+				 HttpSession session = request.getSession();
+				 session.removeAttribute("user");
+				 response.sendRedirect("index.jsp");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -88,7 +85,7 @@ public class UserController extends HttpServlet {
 			String password = request.getParameter("password");
 			Boolean status = false;
 			Long supervisorId = null;
-			if (request.getParameter("supervisorId") != null) {
+			if (request.getParameter("supervisorId") != null && !request.getParameter("supervisorId").isEmpty()) {
 				supervisorId = Long.parseLong(request.getParameter("supervisorId").trim());
 			}
 
@@ -124,6 +121,17 @@ public class UserController extends HttpServlet {
 			} else {
 				userModel.setId(Long.parseLong(request.getParameter("userId")));
 				daoUser.updateUser(userModel);
+				if(request.getParameter("removePermission") != null && !request.getParameter("removePermission").isEmpty()) {
+					Long removePermission = Long.parseLong(request.getParameter("removePermission"));
+					daoPermission.deleteUserPermission(removePermission, userModel.getId());
+				}
+				String[] permissions = request.getParameterValues("permissions");
+				for (String permission : permissions) {
+					PermissionUser permissionUser = new PermissionUser();
+					permissionUser.setPermissionId(Long.parseLong(permission.trim()));
+					permissionUser.setUserId(userModel.getId());
+					daoPermission.save(permissionUser);
+				}
 				response.sendRedirect("home.jsp");
 			}
 

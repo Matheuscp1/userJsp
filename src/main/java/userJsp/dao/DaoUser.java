@@ -67,7 +67,11 @@ public class DaoUser {
             preparedStatement.setString(3, user.getPassword());
             preparedStatement.setString(4, user.getCpf());
             preparedStatement.setBoolean(5, user.getStatus());
-            preparedStatement.setLong(6, user.getsupervisorId());
+            if (user.getsupervisorId() == null) {
+                preparedStatement.setNull(6, 0);
+			} else {
+		        preparedStatement.setLong(6, user.getsupervisorId());
+			}
             preparedStatement.setString(7, user.getName());
             preparedStatement.setLong(8, user.getId());
             preparedStatement.executeUpdate();
@@ -160,11 +164,11 @@ public class DaoUser {
 		return listUsers;
 	}
 
-	public void deleteUser(int userId) {
+	public void deleteUser(Long userId) {
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement("delete from users where id=?");
 			// Parameters start with 1
-			preparedStatement.setInt(1, userId);
+			preparedStatement.setLong(1, userId);
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
@@ -182,6 +186,7 @@ public class DaoUser {
 			UserModel user = new UserModel();
 			user.setId(resultSet.getLong("id"));
 			user.setUserName(resultSet.getString("user_name"));
+			user.setPassword(resultSet.getString("password"));
 			user.setName(resultSet.getString("name"));
 			user.setEmail(resultSet.getString("email"));
 			user.setStatus(resultSet.getBoolean("status"));

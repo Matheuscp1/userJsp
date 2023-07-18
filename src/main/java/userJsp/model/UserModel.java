@@ -30,7 +30,7 @@ public class UserModel {
 	private String cpf;
 	private Long supervisorId;
 	private String supervisorName;
-	private Boolean status;
+	private Boolean status = false;
 	private List<PermissionUser> permissions;
 	public Long getId() {
 		return id;

@@ -49,18 +49,21 @@ public class DaoPermission {
 	public List<PermissionUser> permissionForUser(Long id) throws Exception {
 		String sql = "SELECT * FROM user_permissions WHERE user_id = " + id;
 		List<PermissionUser> permissions = new ArrayList<>();
-		PreparedStatement statement = connection.prepareStatement(sql);
-		ResultSet resultSet = statement.executeQuery();
+		try {
+			Statement statement = connection.createStatement();
+			  ResultSet rs = statement.executeQuery(sql);
 
-		if (resultSet.next()) {
-			PermissionUser permission = new PermissionUser();
-			permission.setId(resultSet.getLong("id"));
-			permission.setUserId(resultSet.getLong("user_id"));
-			permission.setPermissionId(resultSet.getLong("permission_id"));
-
-
-			permissions.add(permission);
-		} 
+			while (rs.next()) {
+				PermissionUser permission = new PermissionUser();
+				permission.setId(rs.getLong("id"));
+				permission.setUserId(rs.getLong("user_id"));
+				permission.setPermissionId(rs.getLong("permission_id"));
+				permissions.add(permission);
+			} 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	
 		return permissions;
 	}
 }

@@ -21,29 +21,28 @@ public class DaoUser {
 	public Long save(UserModel user) {
 		Long generatedKey = 0L;
 		try {
-			String sql = "insert into users (user_name, name,  email, password, status, "
-					+ "cpf, supervisor_id)"
+			String sql = "insert into users (user_name, name,  email, password, status, " + "cpf, supervisor_id)"
 					+ "values (?,?,?,?,?,?,?)";
-			PreparedStatement statement = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
-			
+			PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
 			statement.setString(1, user.getUserName());
 			statement.setString(2, user.getName());
 			statement.setString(3, user.getEmail());
 			statement.setString(4, user.getPassword());
 			statement.setBoolean(5, user.getStatus());
 			statement.setString(6, user.getCpf());
-			if(user.getsupervisorId() == null) {
+			if (user.getsupervisorId() == null) {
 				statement.setNull(7, 0);
-			}else {
+			} else {
 				statement.setLong(7, user.getsupervisorId());
 			}
-			
+
 			statement.execute();
 			connection.commit();
 			ResultSet rs = statement.getGeneratedKeys();
-			
+
 			if (rs.next()) {
-			    generatedKey =  rs.getLong(1);
+				generatedKey = rs.getLong(1);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -51,22 +50,22 @@ public class DaoUser {
 			try {
 				connection.rollback();
 			} catch (SQLException e1) {
-			
+
 			}
 		}
 		return generatedKey;
 	}
-	
+
 	public List<Permission> listAllPermissions() {
-	      List<Permission> listPermission = new ArrayList<Permission>();
+		List<Permission> listPermission = new ArrayList<Permission>();
 		try {
 			String sql = "SELECT * FROM permissions";
 			Statement statement = connection.createStatement();
-			  ResultSet rs = statement.executeQuery(sql);
-            while (rs.next()) {
-            	Permission permission = new Permission(rs.getLong("id"),rs.getString("name"));
-            	listPermission.add(permission);
-            }
+			ResultSet rs = statement.executeQuery(sql);
+			while (rs.next()) {
+				Permission permission = new Permission(rs.getLong("id"), rs.getString("name"));
+				listPermission.add(permission);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 
@@ -78,26 +77,25 @@ public class DaoUser {
 		}
 		return listPermission;
 	}
-	
-	
+
 	public List<UserModel> listAllUsers() {
-	      List<UserModel> listUsers = new ArrayList<UserModel>();
+		List<UserModel> listUsers = new ArrayList<UserModel>();
 		try {
 			String sql = "SELECT a.id as id, a.user_name as user_name, a.email as email, a.cpf as cpf, a.status as status, a.name as name , b.user_name as supervisor_name"
 					+ "	FROM users as a LEFT JOIN users as b on b.supervisor_id = a.id";
 			Statement statement = connection.createStatement();
-			  ResultSet rs = statement.executeQuery(sql);
-          while (rs.next()) {
-        	  UserModel user = new UserModel();
-        	  user.setId(rs.getLong("id"));
-        	  user.setUserName(rs.getString("user_name"));
-           	  user.setName(rs.getString("name"));
-           	  user.setEmail(rs.getString("email"));
-           	  user.setStatus(rs.getBoolean("status"));
-           	  user.setSupervisorName(rs.getString("supervisor_name"));
-           	  user.setCpf(rs.getString("cpf"));
-          	listUsers.add(user);
-          }
+			ResultSet rs = statement.executeQuery(sql);
+			while (rs.next()) {
+				UserModel user = new UserModel();
+				user.setId(rs.getLong("id"));
+				user.setUserName(rs.getString("user_name"));
+				user.setName(rs.getString("name"));
+				user.setEmail(rs.getString("email"));
+				user.setStatus(rs.getBoolean("status"));
+				user.setSupervisorName(rs.getString("supervisor_name"));
+				user.setCpf(rs.getString("cpf"));
+				listUsers.add(user);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 
@@ -110,22 +108,62 @@ public class DaoUser {
 		return listUsers;
 	}
 
-    public void deleteUser(int userId) {
-        try {
-            PreparedStatement preparedStatement = connection
-                    .prepareStatement("delete from users where id=?");
-            // Parameters start with 1
-            preparedStatement.setInt(1, userId);
-            preparedStatement.executeUpdate();
+	public List<UserModel> listUsersOtherThan(Long id) {
+		List<UserModel> listUsers = new ArrayList<UserModel>();
+		try {
+			String sql = "SELECT id,name FROM USERS WHERE id !=" + id;
+			Statement statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery(sql);
+			while (rs.next()) {
+				UserModel user = new UserModel();
+				user.setId(rs.getLong("id"));
+				user.setName(rs.getString("name"));
+				listUsers.add(user);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		return listUsers;
+	}
 
+	public void deleteUser(int userId) {
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement("delete from users where id=?");
+			// Parameters start with 1
+			preparedStatement.setInt(1, userId);
+			preparedStatement.executeUpdate();
 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
+	public UserModel findById(Long id) throws Exception {
+		String sql = "Select * from users where id = " + id;
 
+		PreparedStatement statement = connection.prepareStatement(sql);
+		ResultSet resultSet = statement.executeQuery();
 
+		if (resultSet.next()) {
+			UserModel user = new UserModel();
+			user.setId(resultSet.getLong("id"));
+			user.setUserName(resultSet.getString("user_name"));
+			user.setName(resultSet.getString("name"));
+			user.setEmail(resultSet.getString("email"));
+			user.setStatus(resultSet.getBoolean("status"));
+			user.setsupervisorId(resultSet.getLong("supervisor_id"));
+			user.setCpf(resultSet.getString("cpf"));
+
+			return user;
+		} else {
+			return new UserModel();
+		}
+	}
 
 }

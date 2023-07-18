@@ -4,6 +4,9 @@
 <%@page import="userJsp.dao.DaoUser"%>
 <%@page import="userJsp.model.Permission"%>
 <%@page import="userJsp.model.UserModel"%>
+<% if(session.getAttribute("user") == null){
+	response.sendRedirect("index.jsp");
+}; %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -70,9 +73,9 @@
 			<!-- and so on... -->
 		</tbody>
 	</table>
-		<%
+	<%-- 	<%
 		UserModel user = (UserModel) 	session.getAttribute("user");
 	out.println(user.getPermissions().get(0).getUserId());
-					%>
+					%> --%>
 </body>
 </html>

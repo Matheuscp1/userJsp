@@ -8,7 +8,7 @@ Só usuários  ADMINISTRADORES, podem adicionar,deletar e atualizar.
 Usuários com permissão ao sistema, só poderam ver os dados de outros usuários.
 Importa o arquivo database.sql para o banco de dados mysql.
 Alterar a conexão do banco de dados no arquivo SingleConnection
-
+Adicionar mysql-connector-java-8.0.13.jar na pasta WEB-INF/lib
 
 Java versão 17 e tom cat versão 9.0
 

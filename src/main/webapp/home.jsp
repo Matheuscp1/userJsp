@@ -66,7 +66,7 @@ if(userSession == null){
 					%>
 				</td>
 				<td>
-					<% if(userSession.getPermissions() != null && userSession.getPermissions().size() > 1 ) { %>
+					<% if(userSession.getPermissions() != null && userSession.getPermissions().size() > 1 && userSession.getId() != user.getId()) { %>
 					<a class="link-table" href="UserController?action=delete&userId=<%out.print(user.getId());%>">Deletar</a>
 					<% } %>
 					<a class="link-table" href="UserController?action=edit&userId=<%out.print(user.getId());%>">

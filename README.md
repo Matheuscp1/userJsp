@@ -10,7 +10,7 @@ Importa o arquivo database.sql para o banco de dados mysql.
 Alterar a conexão do banco de dados no arquivo SingleConnection
 Adicionar mysql-connector-java-8.0.13.jar na pasta WEB-INF/lib
 
-Java versão 17 e tom cat versão 9.0
+Java versão 17 e tom cat versão 9.0 e dynamic web module v4.0
 
 
 

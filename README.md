@@ -1,14 +1,17 @@
 # userJSP
 
 ## Getting Started
-
+Importa o arquivo database.sql para o banco de dados mysql.
+Alterar a conexão do banco de dados no arquivo SingleConnection
+Adicionar o build path de Web App, Server Runtime do Apache v9.0
+Adicionar Project Facets: Dynamic Web Module 4.0, Java e Javascript
+Dar um clear no projeto e depois adicionar  mysql-connector-java-8.0.13.jar na pasta WEB-INF/lib do projeto
+Dar clear novamente no projeto para reconhecer a lib do mysql
 Logar com usúario admin para adicionar novos usuários. 
 Usuário administrador: admin e senha 123
 Só usuários  ADMINISTRADORES, podem adicionar,deletar e atualizar.
 Usuários com permissão ao sistema, só poderam ver os dados de outros usuários.
-Importa o arquivo database.sql para o banco de dados mysql.
-Alterar a conexão do banco de dados no arquivo SingleConnection
-Adicionar mysql-connector-java-8.0.13.jar na pasta WEB-INF/lib do projeto
+
 
 Java versão 17 e tom cat versão 9.0 e dynamic web module v4.0
 

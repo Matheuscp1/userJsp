@@ -36,9 +36,14 @@
 
 		<div class="form">
 			<form action="createUser" method="post">
+				<input hidden type="text" name="userId" value="<%out.print(user.getId() == null ? "" : user.getId());%>">
 				<label for="user">Usuario:</label> 
-				<input required type="text" id="user" value="<%	out.print(user.getCpf()); %>"
+				<input required type="text" id="user" value="<%	out.print(user.getUserName()); %>"
 					name="user" placeholder="Nome de usuário"> <br />
+				<label for="name">Nome:</label>
+				 <input required
+					type="text" id="name" name="name" value="<%	out.print(user.getName()); %>"
+					placeholder="Informe seu nome"> <br />
 				<label for="email">Email:</label>
 				 <input required type="email" id="email" value="<%	out.print(user.getEmail()); %>"
 					name="email" placeholder="Informe seu email"> <br />
@@ -49,7 +54,7 @@
 				<select style="margin-bottom: 5px;" name="supervisorId" id="supervisorId">
 					<option value="">Sem responsável</option>
 					<% for(UserModel userSelect : usersSelect){ %>
-					<option value="<%out.print(userSelect.getId()); %> " <%out.print(userSelect.getId() == user.getsupervisorId() ? "selected": ""); %>>
+					<option value="<%out.print(userSelect.getId());%>"<%out.print(userSelect.getId() == user.getsupervisorId() ? "selected": ""); %> >
 						<% out.print(userSelect.getName()); %>
 					</option>
 					<%
@@ -62,10 +67,6 @@
 				<br />
 				<label for="checkbox">Status:</label>
 				<input  type="checkbox" id="checkbox" name="status" <%	out.print(user.getStatus() ? "checked": ""); %>> <br />
-				<label for="name">Nome:</label>
-				 <input required
-					type="text" id="name" name="name" value="<%	out.print(user.getCpf()); %>"
-					placeholder="Informe seu nome"> <br />
 				<label for="name">Permissões:</label>
 				<%
 					for (Permission permission : permissions) {

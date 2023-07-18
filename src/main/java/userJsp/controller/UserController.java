@@ -53,18 +53,18 @@ public class UserController extends HttpServlet {
 				// request.setAttribute("users", dao.getAllUsers());
 			} else if (action.equalsIgnoreCase("edit")) {
 				// forward = INSERT_OR_EDIT;
-				Long id = Long.parseLong(request.getParameter("userId"));
+				Long id = Long.parseLong(request.getParameter("userId").trim());
 				UserModel userSearch = daoUser.findById(id);
 				if (userSearch.getId() != null) {
 					List<PermissionUser> permissions = daoPermission.permissionForUser(userSearch.getId());
 					for (PermissionUser permission : permissions) {
 						userSearch.setPermissions(permissions);
 					}
-					//HttpSession session = request.getSession();
+					// HttpSession session = request.getSession();
 					request.setAttribute("userEdit", userSearch);
 					RequestDispatcher dispatcher = request.getRequestDispatcher("user.jsp");
 					dispatcher.forward(request, response);
-					//response.sendRedirect("user.jsp");
+					// response.sendRedirect("user.jsp");
 				}
 				// User user = dao.getUserById(userId);
 				// request.setAttribute("user", user);
@@ -89,7 +89,7 @@ public class UserController extends HttpServlet {
 			Boolean status = false;
 			Long supervisorId = null;
 			if (request.getParameter("supervisorId") != null) {
-				supervisorId = Long.parseLong(request.getParameter("supervisorId"));
+				supervisorId = Long.parseLong(request.getParameter("supervisorId").trim());
 			}
 
 			String cpf = request.getParameter("cpf");
@@ -108,16 +108,25 @@ public class UserController extends HttpServlet {
 			userModel.setCpf(cpf);
 			userModel.setName(name);
 			Long idUser = 0L;
-			idUser = daoUser.save(userModel);
-			String[] permissions = request.getParameterValues("permissions");
-			for (String permission : permissions) {
-				PermissionUser permissionUser = new PermissionUser();
-				permissionUser.setPermissionId(Long.parseLong(permission.trim()));
-				permissionUser.setUserId(idUser);
-				daoPermission.save(permissionUser);
+			//System.out.println(userModel.getsupervisorId());
+
+			if (request.getParameter("userId") == "") {
+				idUser = daoUser.save(userModel);
+				String[] permissions = request.getParameterValues("permissions");
+				for (String permission : permissions) {
+					PermissionUser permissionUser = new PermissionUser();
+					permissionUser.setPermissionId(Long.parseLong(permission.trim()));
+					permissionUser.setUserId(idUser);
+					daoPermission.save(permissionUser);
+				}
+
+				response.sendRedirect("home.jsp");
+			} else {
+				userModel.setId(Long.parseLong(request.getParameter("userId")));
+				daoUser.updateUser(userModel);
+				response.sendRedirect("home.jsp");
 			}
 
-			response.sendRedirect("home.jsp");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

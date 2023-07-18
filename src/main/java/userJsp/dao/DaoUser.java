@@ -55,6 +55,32 @@ public class DaoUser {
 		}
 		return generatedKey;
 	}
+	
+    public void updateUser(UserModel user) {
+        try {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("update users set user_name=?, email=?, password=?, cpf=?, " +
+                            "status=?, supervisor_id=?, name=? where id=?");
+            // Parameters start with 1
+            preparedStatement.setString(1, user.getUserName());
+            preparedStatement.setString(2, user.getEmail());
+            preparedStatement.setString(3, user.getPassword());
+            preparedStatement.setString(4, user.getCpf());
+            preparedStatement.setBoolean(5, user.getStatus());
+            preparedStatement.setLong(6, user.getsupervisorId());
+            preparedStatement.setString(7, user.getName());
+            preparedStatement.setLong(8, user.getId());
+            preparedStatement.executeUpdate();
+    		connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        	try {
+				connection.rollback();
+			} catch (SQLException e1) {
+
+			}
+        }
+    }
 
 	public List<Permission> listAllPermissions() {
 		List<Permission> listPermission = new ArrayList<Permission>();
@@ -81,8 +107,10 @@ public class DaoUser {
 	public List<UserModel> listAllUsers() {
 		List<UserModel> listUsers = new ArrayList<UserModel>();
 		try {
-			String sql = "SELECT a.id as id, a.user_name as user_name, a.email as email, a.cpf as cpf, a.status as status, a.name as name , b.user_name as supervisor_name"
-					+ "	FROM users as a LEFT JOIN users as b on b.supervisor_id = a.id";
+			String sql = "SELECT a.id as supervisor_id, a.user_name as supervisor_user_name, a.email as supervisor_email, a.cpf as supervisor_cpf,\r\n"
+					+ "a.status as supervisor_status, a.name as supervisor_name , b.user_name as user_name,\r\n"
+					+ "b.id as id, b.name  as name, b.email as email, b.cpf as cpf, b.status as status\r\n"
+					+ "FROM users as a RIGHT JOIN users as b on b.supervisor_id = a.id";
 			Statement statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery(sql);
 			while (rs.next()) {

@@ -10,6 +10,9 @@ Importa o arquivo database.sql para o banco de dados mysql.
 Alterar a conexão do banco de dados no arquivo SingleConnection
 
 
+Java versão 17 e tom cat versão 9.0
+
+
 
 ## Funcionalidades
 * [x] Criação de usuário
